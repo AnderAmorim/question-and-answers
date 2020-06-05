@@ -10,7 +10,8 @@ app.get('/',(req,res)=>{
   res.render('content/index',{
     nome,
     lang,
-    empresa:"Voitto"
+    empresa:"Voitto",
+    mostrar:true
   })
 })
 
