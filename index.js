@@ -5,7 +5,13 @@ app.set('view engine','ejs')
 
 
 app.get('/',(req,res)=>{
-  res.render('content/index')
+  var nome = "Anderson Amorim";
+  var lang = "JS"
+  res.render('content/index',{
+    nome,
+    lang,
+    empresa:"Voitto"
+  })
 })
 
 
