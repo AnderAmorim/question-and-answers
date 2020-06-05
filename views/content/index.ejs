@@ -14,5 +14,9 @@
     <%}else{%>
       <p>N Mostrar</p>
     <%}%>
+    <%produtos.forEach((v)=>{%>
+      <p><%=v.nome%> de valor <%=v.preco%></p>
+      <hr>
+    <%})%>
 </body>
 </html>

@@ -7,11 +7,17 @@ app.set('view engine','ejs')
 app.get('/',(req,res)=>{
   var nome = "Anderson Amorim";
   var lang = "JS"
+  var produtos = [
+    {nome:"Doritos",preco:4},
+    {nome:"Coca",preco:2},
+    {nome:"Leite",preco:2},
+  ]
   res.render('content/index',{
     nome,
     lang,
     empresa:"Voitto",
-    mostrar:true
+    mostrar:true,
+    produtos
   })
 })
 
