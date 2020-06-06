@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 //   res.render('content/index')
 // })
 app.get('/',(req,res)=>{
-  Pergunta.findAll({raw:true})
+  Pergunta.findAll({raw:true,order:[['id','DESC']]})
     .then((perguntas)=>{
       res.render('home',{
         perguntas
@@ -30,6 +30,19 @@ app.get('/',(req,res)=>{
 app.get('/perguntar',(req,res)=>{
   res.render('perguntar')
 })
+
+app.get('/pergunta/:id',(req,res)=>{
+  const id = req.params.id;
+  Pergunta.findOne({raw:true,where:{id}})
+    .then((pergunta)=>{
+      if(!pergunta){
+        res.redirect('/')
+      }else{
+        res.render('pergunta',{pergunta})
+      }
+    })
+})
+
 app.post('/salvarpergunta',(req,res)=>{
   var titulo = req.body.titulo;
   var descricao = req.body.descricao;
