@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const connection = require('./database/database');
 const Pergunta = require('./database/Pergunta');
+const Resposta = require('./database/Resposta');
+
 connection.authenticate()
   .then((error)=>{
     console.log('Connect in DB')
@@ -38,7 +40,11 @@ app.get('/pergunta/:id',(req,res)=>{
       if(!pergunta){
         res.redirect('/')
       }else{
-        res.render('pergunta',{pergunta})
+        Resposta.findAll({where:{
+          id_pergunta:id
+        }}).then((respostas)=>{
+          res.render('pergunta',{pergunta,respostas})
+        })
       }
     })
 })
@@ -53,6 +59,21 @@ app.post('/salvarpergunta',(req,res)=>{
     res.redirect('/');
   }).catch(()=>{
     alert("Houve um erro ao salvar")
+  })
+})
+
+app.post('/salvar_resposta',(req,res)=>{
+  var id_pergunta = req.body.id_pergunta;
+  var corpo = req.body.corpo;
+  Resposta.create({
+    corpo,
+    id_pergunta
+  })
+  .then(()=>{
+    res.redirect('/pergunta/'+id_pergunta)
+  })
+  .catch(()=>{
+    alert('Erro ao salvar resposta')
   })
 })
 
