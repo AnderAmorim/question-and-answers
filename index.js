@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 const connection = require('./database/database');
-const perguntaModel = require('./database/Pergunta');
+const Pergunta = require('./database/Pergunta');
 connection.authenticate()
   .then((error)=>{
     console.log('Connect in DB')
@@ -18,13 +18,29 @@ app.use(bodyParser.json());
 // app.get('/',(req,res)=>{
 //   res.render('content/index')
 // })
-
 app.get('/',(req,res)=>{
+  Pergunta.findAll({raw:true})
+    .then((perguntas)=>{
+      res.render('home',{
+        perguntas
+      })
+    })
+ 
+})
+app.get('/perguntar',(req,res)=>{
   res.render('perguntar')
 })
 app.post('/salvarpergunta',(req,res)=>{
-  var {titulo,descricao} = req.body;
-  res.send(`${titulo}/${descricao}`)
+  var titulo = req.body.titulo;
+  var descricao = req.body.descricao;
+  Pergunta.create({
+    titulo,
+    descricao
+  }).then(()=>{
+    res.redirect('/');
+  }).catch(()=>{
+    alert("Houve um erro ao salvar")
+  })
 })
 
 
